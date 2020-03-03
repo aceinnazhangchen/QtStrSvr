@@ -1,12 +1,13 @@
 #include "SingleClientConfigUI.h"
 #include <QtSerialPort/QSerialPortInfo> 
+#include <QFileDialog>
 
 SingleClientConfigUI::SingleClientConfigUI(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
 
-	QStringList baudList;//波特率
+	QStringList baudList;
 	baudList << "50" << "75" << "100" << "134" << "150" << "200" << "300"
 		<< "600" << "1200" << "1800" << "2400" << "4800" << "9600"
 		<< "14400" << "19200" << "38400" << "56000" << "57600"
@@ -20,6 +21,10 @@ SingleClientConfigUI::SingleClientConfigUI(QWidget *parent)
 
 
 	ui.m_widgetSerialPotConfig->hide();
+	ui.m_widgetFileConfig->hide();
+
+	connect(ui.m_toolButtonRoverFile, SIGNAL(clicked()), this, SLOT(onOpenRoverFileClicked()));
+	connect(ui.m_toolButtonBaseFile, SIGNAL(clicked()), this, SLOT(onOpenBaseFileClicked()));
 }
 
 SingleClientConfigUI::~SingleClientConfigUI()
@@ -129,6 +134,9 @@ void SingleClientConfigUI::setConfig(QJsonObject & config)
 	ui.m_comboBoxMountpoint->setEditText(config["mountpoint"].toString());
 	ui.m_comboBoxUser->setEditText(config["username"].toString());
 	ui.m_comboBoxPassword->setEditText(config["password"].toString());
+
+	ui.m_comboRoverFile->setEditText(config["roverfile"].toString());
+	ui.m_comboBaseFile->setEditText(config["basefile"].toString());
 }
 
 void SingleClientConfigUI::getConfig(QJsonObject & config)
@@ -147,6 +155,9 @@ void SingleClientConfigUI::getConfig(QJsonObject & config)
 	config.insert("mountpoint", ui.m_comboBoxMountpoint->currentText());
 	config.insert("username", ui.m_comboBoxUser->currentText());
 	config.insert("password", ui.m_comboBoxPassword->currentText());
+
+	config.insert("roverfile", ui.m_comboRoverFile->currentText());
+	config.insert("basefile", ui.m_comboBaseFile->currentText());
 }
 
 void SingleClientConfigUI::onStreamTypeChanged(int nindex)
@@ -155,17 +166,41 @@ void SingleClientConfigUI::onStreamTypeChanged(int nindex)
 	{
 		ui.m_widgetNetConfig->show();
 		ui.m_widgetSerialPotConfig->hide();
+		ui.m_widgetFileConfig->hide();
 	}
 	else if (nindex == 1)
 	{
 		ui.m_widgetNetConfig->hide();
 		ui.m_widgetSerialPotConfig->show();
+		ui.m_widgetFileConfig->hide();
 
 		ui.PortBox->clear();
-		//通过QSerialPortInfo查找可用串口
+
 		foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
 		{
 			ui.PortBox->addItem(info.portName());
 		}
 	}
+	else if (nindex == 2) {
+		ui.m_widgetNetConfig->hide();
+		ui.m_widgetSerialPotConfig->hide();
+		ui.m_widgetFileConfig->show();
+	}
+}
+
+
+void SingleClientConfigUI::onOpenRoverFileClicked() {
+	QString path = QFileDialog::getOpenFileName(this, tr("Open Files"), ".", tr("RTCM Files(*.* )"));
+	if (path.length() == 0) {
+		return;
+	}
+	ui.m_comboRoverFile->setEditText(path);
+}
+
+void SingleClientConfigUI::onOpenBaseFileClicked() {
+	QString path = QFileDialog::getOpenFileName(this, tr("Open Files"), ".", tr("RTCM Files(*.* )"));
+	if (path.length() == 0) {
+		return;
+	}
+	ui.m_comboBaseFile->setEditText(path);
 }

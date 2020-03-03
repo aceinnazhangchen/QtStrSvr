@@ -1,5 +1,6 @@
 {
     "Input": {
+        "basefile": "E:/WorkSpace/Qt/QtStrSvr/WX0107/rover.dat",
         "baud": 19,
         "bitnum": 3,
         "check": true,
@@ -8,12 +9,14 @@
         "parity": 0,
         "password": "47JWBPSH08OLFH8U",
         "port": "2201",
+        "roverfile": "E:/WorkSpace/Qt/QtStrSvr/WX0107/rover.dat",
         "serialport": -1,
         "stop": 0,
-        "type": 0,
+        "type": 2,
         "username": "aceinnadd"
     },
     "Output_1": {
+        "basefile": "",
         "baud": 19,
         "bitnum": 3,
         "check": true,
@@ -22,12 +25,14 @@
         "parity": 0,
         "password": "47JWBPSH08OLFH8U",
         "port": "2101",
+        "roverfile": "",
         "serialport": -1,
         "stop": 0,
         "type": 1,
         "username": "aceinnadd"
     },
     "Output_2": {
+        "basefile": "",
         "baud": 19,
         "bitnum": 3,
         "check": false,
@@ -36,9 +41,10 @@
         "parity": 0,
         "password": "47JWBPSH08OLFH8U",
         "port": "2101",
+        "roverfile": "",
         "serialport": -1,
         "stop": 0,
-        "type": 1,
+        "type": 0,
         "username": "aceinnadd"
     },
     "base": {

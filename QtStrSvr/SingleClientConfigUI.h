@@ -34,4 +34,6 @@ private:
 	Ui::SingleClientConfigUI ui;
 private slots:
 	void onStreamTypeChanged(int nindex);
+	void onOpenRoverFileClicked();
+	void onOpenBaseFileClicked();
 };
